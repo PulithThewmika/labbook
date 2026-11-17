@@ -1,0 +1,30 @@
+@startuml ci-cd-flow
+!theme plain
+title CI/CD flow
+
+start
+:Developer opens pull request;
+:GitHub Actions runs\nbackend, scheduler, frontend jobs;
+if (all checks green?) then (yes)
+  :Squash-merge to main;
+  :Choreo builds each component\n(Ballerina / React buildpack);
+  :Choreo security scan;
+  if (scan passes?) then (yes)
+    :Deploy to Development;
+    :Smoke test (student + admin);
+    if (tests pass?) then (yes)
+      :Promote to Production;
+    else (no)
+      :Fix on a new branch;
+      stop
+    endif
+  else (no)
+    :Fix vulnerabilities;
+    stop
+  endif
+else (no)
+  :Fix and push again;
+  stop
+endif
+stop
+@enduml
