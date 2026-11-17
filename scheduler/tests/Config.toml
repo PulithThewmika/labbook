@@ -1,0 +1,8 @@
+# Used by `bal test` against the local docker-compose database. No real secrets.
+
+dbHost = "localhost"
+dbPort = 5432
+dbName = "labbook"
+dbUser = "labbook"
+dbPassword = "labbook_local"   # local docker-compose default only; use a secret config on Choreo
+dbSslMode = "disable"
