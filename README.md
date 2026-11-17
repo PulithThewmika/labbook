@@ -4,9 +4,9 @@
 
 Book university labs and equipment without double bookings.
 
-**Live demo:** TODO(phase-8)
+**Live demo:** not deployed yet. Choreo organisation access is pending; the full step-by-step runbook is in [docs/deployment-choreo.md](docs/deployment-choreo.md). TODO(phase-8)
 
-![LabBook screenshot](docs/screenshots/labs.png)
+TODO(phase-8): add a screenshot (docs/screenshots/labs.png).
 
 ## The problem
 
