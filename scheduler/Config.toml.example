@@ -1,0 +1,8 @@
+# Copy to Config.toml (gitignored) for local development.
+
+dbHost = "localhost"
+dbPort = 5432
+dbName = "labbook"
+dbUser = "labbook"
+dbPassword = "labbook_local"   # local docker-compose default only; use a secret config on Choreo
+dbSslMode = "disable"
