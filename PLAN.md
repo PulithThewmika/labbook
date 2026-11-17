@@ -529,7 +529,7 @@ Each phase: create its issue → branch → work → quality gate → commit(s) 
 ## 18. Progress tracker
 
 - [x] Phase 0 — Prerequisites
-- [ ] Phase 1 — Repo scaffold & GitHub
+- [x] Phase 1 — Repo scaffold & GitHub
 - [ ] Phase 2 — Database
 - [ ] Phase 3 — Documentation & diagrams
 - [ ] Phase 4 — Backend API
