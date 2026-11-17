@@ -1,0 +1,54 @@
+@startuml er-diagram
+!theme plain
+hide circle
+skinparam linetype ortho
+title LabBook - Entity Relationship (IE notation)
+
+entity users {
+  * id : uuid <<PK>>
+  --
+  * subject : text <<UNIQUE>>
+  email : text <<UNIQUE>>
+  * display_name : text
+  * role : student | admin
+  * created_at, last_seen_at
+}
+entity labs {
+  * id : uuid <<PK>>
+  --
+  * code : text <<UNIQUE>>
+  * name, building, room : text
+  * capacity : int (1..500)
+  * open_time < close_time
+  * is_active : boolean
+}
+entity equipment {
+  * id : uuid <<PK>>
+  --
+  lab_id : uuid <<FK>>
+  * asset_tag : text <<UNIQUE>>
+  * name, category : text
+  * status : available | maintenance | retired
+}
+entity bookings {
+  * id : uuid <<PK>>
+  --
+  * user_id : uuid <<FK>>
+  * resource_type : lab | equipment
+  lab_id : uuid <<FK>>
+  equipment_id : uuid <<FK>>
+  * start_at, end_at : timestamptz
+  * purpose, attendees
+  * status : text (6 values, see lifecycle)
+  decided_by : uuid <<FK users>>
+  --
+  EXCLUDE no_lab_overlap
+  EXCLUDE no_equipment_overlap
+}
+
+users ||--o{ bookings : requests
+users |o--o{ bookings : decides
+labs |o--o{ equipment : "home lab"
+labs |o--o{ bookings : "lab booking"
+equipment |o--o{ bookings : "equipment booking"
+@enduml

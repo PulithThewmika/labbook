@@ -1,0 +1,19 @@
+@startuml booking-lifecycle
+!theme plain
+title Booking status lifecycle
+
+[*] --> pending : student creates (POST /bookings)
+[*] --> approved : admin creates (BR-11)
+pending --> approved : admin approves
+pending --> rejected : admin rejects (note required)
+pending --> cancelled : owner cancels before start / admin cancels
+pending --> expired : scheduler, start_at passed
+approved --> cancelled : owner cancels before start / admin cancels
+approved --> completed : scheduler, end_at passed
+rejected --> [*]
+cancelled --> [*]
+expired --> [*]
+completed --> [*]
+note right of pending : holds the slot\n(exclusion constraint)
+note right of approved : holds the slot
+@enduml

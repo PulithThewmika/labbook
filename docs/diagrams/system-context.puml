@@ -1,0 +1,25 @@
+@startuml system-context
+!theme plain
+title LabBook - System Context
+
+actor "Student" as S
+actor "Lab Admin" as A
+rectangle "LabBook" as LB {
+  component "labbook-web\n(React SPA)" as WEB
+  component "labbook-api\n(Ballerina)" as API
+  component "labbook-scheduler\n(Ballerina)" as SCH
+  database "PostgreSQL" as DB
+}
+cloud "Asgardeo\n(identity provider)" as IDP
+cloud "Choreo\n(hosting, gateway, CI/CD, observability)" as CH
+cloud "GitHub\n(source + Actions CI)" as GH
+
+S --> WEB : browse, request bookings
+A --> WEB : approve, manage labs
+WEB --> IDP : sign in (OIDC)
+WEB --> API : REST via Choreo gateway
+API --> DB
+SCH --> DB : expire / complete bookings
+GH --> CH : source for builds
+CH ..> LB : builds, deploys, runs
+@enduml

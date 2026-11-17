@@ -1,0 +1,35 @@
+@startuml seq-create-booking
+!theme plain
+title Create a booking
+
+actor Student
+participant "labbook-web" as Web
+participant "Asgardeo" as IDP
+participant "Choreo Gateway" as GW
+participant "labbook-api" as API
+database PostgreSQL as DB
+
+Student -> Web : open app, click Sign in
+Web -> IDP : /auth/login (managed auth, OIDC)
+IDP --> Web : session cookie
+Student -> Web : submit booking form
+Web -> GW : POST /choreo-apis/.../bookings (session -> access token)
+GW -> GW : validate token
+GW -> API : POST /bookings + x-jwt-assertion
+API -> API : verify JWT signature, resolve caller + role
+API -> DB : load resource, count upcoming bookings
+API -> API : check rules BR-1..BR-5, BR-7, BR-8
+alt a rule is broken
+  API --> Web : 422 {code: RULE_VIOLATION, rule: BR-n}
+else rules pass
+  API -> DB : INSERT booking
+  alt exclusion constraint (SQLSTATE 23P01)
+    DB --> API : conflicting key value
+    API --> Web : 409 {code: BOOKING_CONFLICT}
+  else free slot
+    DB --> API : row
+    API --> Web : 201 booking (pending, or approved for admins)
+  end
+end
+Web --> Student : show result or inline error
+@enduml
