@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@layer base {
+  body { @apply bg-slate-50 text-slate-900 antialiased; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-indigo-600; }
+}
+
+/* Pending slots in the availability timeline */
+.striped {
+  background-image: repeating-linear-gradient(45deg, #fde68a 0 6px, #fef3c7 6px 12px);
+}

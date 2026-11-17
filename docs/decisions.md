@@ -39,3 +39,11 @@ Pending. Decided in Phase 8: a Choreo-managed PostgreSQL if the account offers o
 - **Unit tests still start the module,** so they need the database to be reachable (the Postgres client connects at start-up). CI provides one.
 - **Integration test client** is pinned to HTTP/1.1: the default h2c upgrade stalls the first POST on a fresh connection.
 - **Stats:** `labUtilisation7d` counts approved and completed bookings only.
+
+## Phase 6 notes (frontend)
+
+- **React 18** is pinned as the plan says, although the Vite template ships React 19. Vite 8, TypeScript 7 and oxlint come from the template.
+- **`timeZone` in `config.js`:** the runtime config has a third key, `timeZone` (default `Asia/Colombo`), so dates are entered and shown in campus time. The Choreo file mount may omit it.
+- **Extra dev dependency:** `@testing-library/dom`, a required peer of `@testing-library/react`.
+- **My bookings tabs:** Upcoming holds live (pending/approved, not yet ended) bookings; Past holds everything else, including cancelled and rejected. The list is fetched once (limit 100) and split in the browser.
+- **Dev auth:** in `authMode = "dev"` the SPA sends `X-Dev-User` from a small picker. The Choreo sign-in/sign-out endpoints (`/auth/login`, `/auth/logout`) are used as written in the plan and are verified in Phase 8.

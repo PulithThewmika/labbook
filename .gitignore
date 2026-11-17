@@ -10,3 +10,6 @@ Config.toml
 .DS_Store
 .vscode/*
 !.vscode/extensions.json
+
+# Local assistant instructions
+CLAUDE.md
