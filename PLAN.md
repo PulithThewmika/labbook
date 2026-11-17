@@ -535,7 +535,7 @@ Each phase: create its issue → branch → work → quality gate → commit(s) 
 - [x] Phase 4 — Backend API
 - [x] Phase 5 — Scheduler
 - [x] Phase 6 — Frontend
-- [ ] Phase 7 — CI
-- [ ] Phase 8 — Deploy on Choreo
+- [x] Phase 7 — CI
+- [ ] Phase 8 — Deploy on Choreo (blocked: Choreo organisation creation is restricted; runbook and doc corrections done in docs/deployment-choreo.md)
 - [ ] Phase 9 — Polish & docs completion
 - [ ] Phase 10 — Release

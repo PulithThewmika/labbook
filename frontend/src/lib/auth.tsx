@@ -59,7 +59,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
       signOut: () => {
         if (getConfig().authMode === 'choreo') {
-          window.location.href = '/auth/logout'
+          // Choreo Managed Authentication logout: /auth/logout?session_hint=<value of the session_hint cookie>
+          const hint = document.cookie.split('; ').find((c) => c.startsWith('session_hint='))?.split('=')[1] ?? ''
+          window.location.href = `/auth/logout?session_hint=${hint}`
           return
         }
         setDevUser(null)
