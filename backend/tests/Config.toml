@@ -1,0 +1,11 @@
+# Used by `bal test` against the local docker-compose database. No real secrets.
+port = 8080
+devMode = true
+adminEmails = ["admin@labbook.dev"]
+dbHost = "localhost"
+dbPort = 5432
+dbName = "labbook"
+dbUser = "labbook"
+dbPassword = "labbook_local"
+dbSslMode = "disable"
+campusTimeZone = "Asia/Colombo"

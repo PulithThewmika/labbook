@@ -1,0 +1,890 @@
+openapi: 3.0.1
+info:
+  title: Service Openapi Yaml
+  version: 1.0.0
+servers:
+- url: "{server}:{port}/"
+  variables:
+    server:
+      default: http://localhost
+    port:
+      default: "8080"
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                required:
+                - status
+                type: object
+                properties:
+                  status:
+                    type: string
+                additionalProperties: false
+  /me:
+    get:
+      operationId: getMe
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Me"
+  /labs:
+    get:
+      operationId: getLabs
+      parameters:
+      - name: includeInactive
+        in: query
+        schema:
+          type: boolean
+          default: false
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lab"
+    post:
+      operationId: postLabs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LabInput"
+        required: true
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lab"
+  /labs/{id}:
+    get:
+      operationId: getLabsId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LabDetail"
+    put:
+      operationId: putLabsId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LabInput"
+        required: true
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lab"
+  /equipment:
+    get:
+      operationId: getEquipment
+      parameters:
+      - name: labId
+        in: query
+        schema:
+          type: string
+          nullable: true
+      - name: category
+        in: query
+        schema:
+          type: string
+          nullable: true
+      - name: status
+        in: query
+        schema:
+          type: string
+          nullable: true
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Equipment"
+    post:
+      operationId: postEquipment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EquipmentInput"
+        required: true
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Equipment"
+  /equipment/{id}:
+    put:
+      operationId: putEquipmentId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EquipmentInput"
+        required: true
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Equipment"
+  /availability:
+    get:
+      operationId: getAvailability
+      parameters:
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: resourceId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: resourceType
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Availability"
+  /bookings:
+    get:
+      operationId: getBookings
+      parameters:
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - name: scope
+        in: query
+        schema:
+          type: string
+          default: all
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - name: when
+        in: query
+        schema:
+          type: string
+          nullable: true
+      - name: status
+        in: query
+        schema:
+          type: string
+          nullable: true
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Booking"
+    post:
+      operationId: postBookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingInput"
+        required: true
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+  /bookings/{id}:
+    get:
+      operationId: getBookingsId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+  /bookings/{id}/cancel:
+    post:
+      operationId: postBookingsIdCancel
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+  /bookings/{id}/approve:
+    post:
+      operationId: postBookingsIdApprove
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+  /bookings/{id}/reject:
+    post:
+      operationId: postBookingsIdReject
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RejectInput"
+        required: true
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+  /stats:
+    get:
+      operationId: getStats
+      responses:
+        default:
+          description: Any Response
+          content:
+            '*/*':
+              schema:
+                description: Any type of entity body
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stats"
+components:
+  schemas:
+    Availability:
+      required:
+      - busy
+      - closeTime
+      - openTime
+      type: object
+      properties:
+        openTime:
+          type: string
+        closeTime:
+          type: string
+        busy:
+          type: array
+          items:
+            $ref: "#/components/schemas/BusySlot"
+      additionalProperties: false
+    Booking:
+      required:
+      - adminNote
+      - attendees
+      - createdAt
+      - decidedAt
+      - endAt
+      - id
+      - purpose
+      - resourceId
+      - resourceName
+      - resourceType
+      - startAt
+      - status
+      - userId
+      - userName
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        userName:
+          type: string
+        resourceType:
+          type: string
+        resourceId:
+          type: string
+        resourceName:
+          type: string
+        startAt:
+          type: string
+        endAt:
+          type: string
+        purpose:
+          type: string
+        attendees:
+          type: integer
+          format: int64
+        status:
+          type: string
+        adminNote:
+          type: string
+          nullable: true
+        decidedAt:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      additionalProperties: false
+    BookingInput:
+      required:
+      - endAt
+      - purpose
+      - resourceId
+      - resourceType
+      - startAt
+      type: object
+      properties:
+        resourceType:
+          type: string
+        resourceId:
+          type: string
+        startAt:
+          type: string
+        endAt:
+          type: string
+        purpose:
+          type: string
+        attendees:
+          type: integer
+          format: int64
+          default: 1
+      additionalProperties: false
+    BusySlot:
+      required:
+      - endAt
+      - startAt
+      - status
+      type: object
+      properties:
+        startAt:
+          type: string
+        endAt:
+          type: string
+        status:
+          type: string
+      additionalProperties: false
+    Equipment:
+      required:
+      - assetTag
+      - category
+      - description
+      - id
+      - labCode
+      - labId
+      - name
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        labId:
+          type: string
+          nullable: true
+        labCode:
+          type: string
+          nullable: true
+        assetTag:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+      additionalProperties: false
+    EquipmentInput:
+      required:
+      - assetTag
+      - category
+      - name
+      type: object
+      properties:
+        labId:
+          type: string
+          nullable: true
+        assetTag:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+          default: ""
+        status:
+          type: string
+          default: available
+      additionalProperties: false
+    ErrorPayload:
+      required:
+      - message
+      - method
+      - path
+      - reason
+      - status
+      - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+          format: int64
+        reason:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        method:
+          type: string
+    Lab:
+      required:
+      - building
+      - capacity
+      - closeTime
+      - code
+      - description
+      - id
+      - isActive
+      - name
+      - openTime
+      - room
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        building:
+          type: string
+        room:
+          type: string
+        capacity:
+          type: integer
+          format: int64
+        description:
+          type: string
+        openTime:
+          type: string
+        closeTime:
+          type: string
+        isActive:
+          type: boolean
+      additionalProperties: false
+    LabDetail:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/Lab"
+      - required:
+        - equipment
+        type: object
+        properties:
+          equipment:
+            type: array
+            items:
+              $ref: "#/components/schemas/Equipment"
+        additionalProperties: false
+    LabInput:
+      required:
+      - building
+      - capacity
+      - code
+      - name
+      - room
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        building:
+          type: string
+        room:
+          type: string
+        capacity:
+          type: integer
+          format: int64
+        description:
+          type: string
+          default: ""
+        openTime:
+          type: string
+          default: 08:00
+        closeTime:
+          type: string
+          default: 17:00
+        isActive:
+          type: boolean
+          default: true
+      additionalProperties: false
+    LabUtilisation:
+      required:
+      - code
+      - hoursBooked
+      - hoursOpen
+      - labId
+      - ratio
+      type: object
+      properties:
+        labId:
+          type: string
+        code:
+          type: string
+        hoursBooked:
+          type: number
+          format: float
+        hoursOpen:
+          type: number
+          format: float
+        ratio:
+          type: number
+          format: float
+      additionalProperties: false
+    Me:
+      required:
+      - displayName
+      - email
+      - id
+      - role
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          nullable: true
+        displayName:
+          type: string
+        role:
+          type: string
+      additionalProperties: false
+    RejectInput:
+      required:
+      - note
+      type: object
+      properties:
+        note:
+          type: string
+      additionalProperties: false
+    Stats:
+      required:
+      - bookingsToday
+      - labUtilisation7d
+      - pendingCount
+      - topEquipment30d
+      type: object
+      properties:
+        bookingsToday:
+          type: integer
+          format: int64
+        pendingCount:
+          type: integer
+          format: int64
+        labUtilisation7d:
+          type: array
+          items:
+            $ref: "#/components/schemas/LabUtilisation"
+        topEquipment30d:
+          type: array
+          items:
+            $ref: "#/components/schemas/TopEquipment"
+      additionalProperties: false
+    TopEquipment:
+      required:
+      - count
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        count:
+          type: integer
+          format: int64
+      additionalProperties: false

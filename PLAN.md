@@ -532,7 +532,7 @@ Each phase: create its issue → branch → work → quality gate → commit(s) 
 - [x] Phase 1 — Repo scaffold & GitHub
 - [x] Phase 2 — Database
 - [x] Phase 3 — Documentation & diagrams
-- [ ] Phase 4 — Backend API
+- [x] Phase 4 — Backend API
 - [ ] Phase 5 — Scheduler
 - [ ] Phase 6 — Frontend
 - [ ] Phase 7 — CI
