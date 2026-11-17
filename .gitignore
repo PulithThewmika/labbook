@@ -1,0 +1,12 @@
+node_modules/
+dist/
+target/
+# Ballerina / app configs hold secrets: only examples and test configs are committed
+Config.toml
+!tests/Config.toml
+.env*
+!.env.example
+*.local
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
