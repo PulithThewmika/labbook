@@ -1,5 +1,7 @@
 # LabBook
 
+[![CI](https://github.com/PulithThewmika/labbook/actions/workflows/ci.yml/badge.svg)](https://github.com/PulithThewmika/labbook/actions/workflows/ci.yml)
+
 Book university labs and equipment without double bookings.
 
 **Live demo:** TODO(phase-8)
