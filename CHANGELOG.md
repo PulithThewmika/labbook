@@ -5,6 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+- Container images published to GitHub Container Registry (`labbook-api`, `labbook-scheduler`, `labbook-web`), built by a workflow on version tags. `1.0.0` and `latest` are available.
+
 ## [1.0.0] - 2026-11-18
 
 First public release.
