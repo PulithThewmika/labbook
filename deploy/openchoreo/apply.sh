@@ -61,3 +61,12 @@ echo "==> Components (this starts the builds)"
 # LABBOOK_BRANCH lets you build another branch (default: main).
 sed "s#branch: \"main\"#branch: \"${LABBOOK_BRANCH:-main}\"#" deploy/openchoreo/components.yaml | kubectl apply -f -
 echo "Done. Watch progress with: kubectl get workflowruns,components -n default"
+
+echo "==> Scheduler schedule (every 15 minutes)"
+for _ in $(seq 1 60); do
+  kubectl get releasebinding labbook-scheduler-development -n default >/dev/null 2>&1 && break
+  sleep 5
+done
+kubectl patch releasebinding labbook-scheduler-development -n default --type=merge \
+  -p '{"spec":{"componentTypeEnvironmentConfigs":{"schedule":"*/15 * * * *"}}}'
+echo "Open the app: kubectl get httproute -A (look for the web-labbook-web-development-... hostname) on port 19080"

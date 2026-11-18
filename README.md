@@ -4,7 +4,7 @@
 
 Book university labs and equipment without double bookings.
 
-**Live demo:** not deployed yet. Choreo organisation access is pending; the full step-by-step runbook is in [docs/deployment-choreo.md](docs/deployment-choreo.md). TODO(phase-8)
+**Live demo:** not deployed yet. Choreo organisation access is pending; the Choreo runbook is in [docs/deployment-choreo.md](docs/deployment-choreo.md). LabBook runs end to end on [OpenChoreo](https://openchoreo.dev), the open-source Choreo platform: see [docs/deployment-openchoreo.md](docs/deployment-openchoreo.md). TODO(phase-8)
 
 TODO(phase-8): add a screenshot (docs/screenshots/labs.png).
 
@@ -56,7 +56,7 @@ Then follow [docs/local-development.md](docs/local-development.md) to run the AP
 
 ## Deployment
 
-See [docs/deployment-choreo.md](docs/deployment-choreo.md).
+Choreo cloud: [docs/deployment-choreo.md](docs/deployment-choreo.md). Local OpenChoreo: [docs/deployment-openchoreo.md](docs/deployment-openchoreo.md).
 
 ## Project structure
 
@@ -70,7 +70,7 @@ docs/        Documentation and diagrams
 
 ## Documentation
 
-[Architecture](docs/architecture.md) · [Database schema](docs/database-schema.md) · [API](docs/api.md) · [Security](docs/security.md) · [Local development](docs/local-development.md) · [Deployment](docs/deployment-choreo.md) · [User guide](docs/user-guide.md) · [Decisions](docs/decisions.md)
+[Architecture](docs/architecture.md) · [Database schema](docs/database-schema.md) · [API](docs/api.md) · [Security](docs/security.md) · [Local development](docs/local-development.md) · [Deployment (Choreo)](docs/deployment-choreo.md) · [Deployment (OpenChoreo)](docs/deployment-openchoreo.md) · [User guide](docs/user-guide.md) · [Decisions](docs/decisions.md)
 
 ## Roadmap
 
