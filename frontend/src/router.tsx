@@ -1,6 +1,7 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { Spinner } from './components/feedback'
 import { useAuth } from './lib/auth'
+import AuthCallback from './pages/AuthCallback'
 import AdminEquipment from './pages/admin/AdminEquipment'
 import AdminLabs from './pages/admin/AdminLabs'
 import Approvals from './pages/admin/Approvals'
@@ -27,6 +28,7 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
       <Route element={<RequireAuth />}>
         <Route path="/labs" element={<Labs />} />
         <Route path="/labs/:id" element={<LabDetail />} />

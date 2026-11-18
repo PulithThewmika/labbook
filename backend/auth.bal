@@ -11,6 +11,9 @@ configurable string[] adminEmails = [];
 configurable string jwtIssuer = "";
 // JWKS URL used to verify the JWT signature.
 configurable string jwtJwksUrl = "";
+// Request header that carries the JWT: "x-jwt-assertion" behind the Choreo gateway, or "Authorization"
+// (Bearer token) when the SPA signs in directly with an OIDC provider such as ThunderID on OpenChoreo.
+configurable string jwtHeader = "x-jwt-assertion";
 
 final jwt:ValidatorConfig jwtValidator = {
     issuer: jwtIssuer,
@@ -44,11 +47,11 @@ function authenticate(http:Request req) returns Caller|error {
         email = devEmail;
         name = localPart(devEmail);
     } else {
-        string|http:HeaderNotFoundError token = req.getHeader("x-jwt-assertion");
-        if token is http:HeaderNotFoundError {
+        string|http:HeaderNotFoundError raw = req.getHeader(jwtHeader);
+        if raw is http:HeaderNotFoundError {
             return unauthenticated();
         }
-        jwt:Payload|jwt:Error p = jwt:validate(token, jwtValidator);
+        jwt:Payload|jwt:Error p = jwt:validate(tokenFrom(raw), jwtValidator);
         if p is jwt:Error {
             log:printWarn("JWT validation failed");
             return unauthenticated("Invalid token");
@@ -62,6 +65,12 @@ function authenticate(http:Request req) returns Caller|error {
         name = displayNameOf(p, email, sub);
     }
     return upsertUser(subject, email, name, isAdminEmail(email));
+}
+
+// Accepts a bare JWT or an "Authorization: Bearer <jwt>" value.
+function tokenFrom(string raw) returns string {
+    string v = raw.trim();
+    return v.toLowerAscii().startsWith("bearer ") ? v.substring(7).trim() : v;
 }
 
 function isAdminEmail(string? email) returns boolean {

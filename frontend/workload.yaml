@@ -19,3 +19,18 @@ dependencies:
       visibility: project
       envBindings:
         address: LABBOOK_API_URL
+
+configurations:
+  env:
+    # Real sign-in with ThunderID (OpenChoreo's identity provider), authorization code flow with PKCE.
+    - name: LABBOOK_AUTH_MODE
+      value: "oidc"
+    - name: LABBOOK_OIDC_AUTHORITY
+      value: "http://thunder.openchoreo.localhost:8080"
+    - name: LABBOOK_OIDC_CLIENT_ID
+      value: "labbook-web"
+    # The token exchange is proxied inside the cluster (see nginx.conf.template).
+    - name: LABBOOK_IDP_TOKEN_URL
+      value: "http://thunder-service.thunder.svc.cluster.local:8090/oauth2/token"
+    - name: LABBOOK_IDP_PUBLIC_HOST
+      value: "thunder.openchoreo.localhost:8080"

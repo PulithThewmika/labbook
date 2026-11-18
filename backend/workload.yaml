@@ -29,9 +29,15 @@ configurations:
   env:
     - name: BAL_CONFIG_VAR_DBSSLMODE
       value: "disable"
-    # Local OpenChoreo demo only: the identity provider (ThunderID) is not wired in yet, so the
-    # API trusts the X-Dev-User header. Never enable devMode on a shared or public deployment.
+    # Sign-in is handled by ThunderID: the SPA sends its access token as "Authorization: Bearer".
     - name: BAL_CONFIG_VAR_DEVMODE
-      value: "true"
+      value: "false"
+    - name: BAL_CONFIG_VAR_JWTHEADER
+      value: "Authorization"
+    - name: BAL_CONFIG_VAR_JWTISSUER
+      value: "http://thunder.openchoreo.localhost:8080"
+    - name: BAL_CONFIG_VAR_JWTJWKSURL
+      value: "http://thunder-service.thunder.svc.cluster.local:8090/oauth2/jwks"
+    # Users with these emails get the admin role (OpenChoreo default admin user).
     - name: BAL_CONFIG_DATA
-      value: 'adminEmails = ["admin@labbook.dev"]'
+      value: 'adminEmails = ["admin@openchoreo.dev"]'
