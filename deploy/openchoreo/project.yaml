@@ -1,0 +1,55 @@
+apiVersion: openchoreo.dev/v1alpha1
+kind: Project
+metadata:
+  name: labbook
+  namespace: default
+  annotations:
+    openchoreo.dev/display-name: LabBook
+    openchoreo.dev/description: University lab and equipment booking
+  labels:
+    openchoreo.dev/name: labbook
+spec:
+  deploymentPipelineRef:
+    name: default
+  type:
+    kind: ClusterProjectType
+    name: default
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: ProjectReleaseBinding
+metadata:
+  name: labbook-development
+  namespace: default
+  labels:
+    openchoreo.dev/project: labbook
+    openchoreo.dev/environment: development
+spec:
+  owner:
+    projectName: labbook
+  environment: development
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: ProjectReleaseBinding
+metadata:
+  name: labbook-staging
+  namespace: default
+  labels:
+    openchoreo.dev/project: labbook
+    openchoreo.dev/environment: staging
+spec:
+  owner:
+    projectName: labbook
+  environment: staging
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: ProjectReleaseBinding
+metadata:
+  name: labbook-production
+  namespace: default
+  labels:
+    openchoreo.dev/project: labbook
+    openchoreo.dev/environment: production
+spec:
+  owner:
+    projectName: labbook
+  environment: production

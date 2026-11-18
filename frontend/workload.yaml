@@ -1,0 +1,21 @@
+# OpenChoreo workload descriptor for labbook-web (static SPA behind nginx).
+# nginx proxies /api/ to the API component, so the browser stays on one origin (no CORS needed).
+apiVersion: openchoreo.dev/v1alpha1
+
+metadata:
+  name: labbook-web
+
+endpoints:
+  - name: web
+    port: 80
+    type: HTTP
+    visibility:
+      - external
+
+dependencies:
+  endpoints:
+    - component: labbook-api
+      name: api
+      visibility: project
+      envBindings:
+        address: LABBOOK_API_URL

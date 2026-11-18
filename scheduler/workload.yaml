@@ -1,0 +1,20 @@
+# OpenChoreo workload descriptor for labbook-scheduler (a scheduled task: runs once per tick and exits).
+apiVersion: openchoreo.dev/v1alpha1
+
+metadata:
+  name: labbook-scheduler
+
+dependencies:
+  resources:
+    - ref: labbook-postgres
+      envBindings:
+        host: BAL_CONFIG_VAR_DBHOST
+        port: BAL_CONFIG_VAR_DBPORT
+        username: BAL_CONFIG_VAR_DBUSER
+        password: BAL_CONFIG_VAR_DBPASSWORD
+        database: BAL_CONFIG_VAR_DBNAME
+
+configurations:
+  env:
+    - name: BAL_CONFIG_VAR_DBSSLMODE
+      value: "disable"

@@ -58,3 +58,11 @@ Checked on 2026-11-18 against the Choreo Labs developer docs (now served from ch
 - **Backend JWT:** header `X-JWT-Assertion` (header names are case-insensitive). `iss` is `wso2.org/products/am`. The JWKS URL depends on the data-plane region: `https://gateway.e1-us-east-azure.choreoapis.dev/.wellknown/jwks` (US East) or `https://gateway.e1-eu-north-azure.choreoapis.dev/.wellknown/jwks` (EU North). RSA keys only. There is no `aud` unless "End User Token Audiences" is set. `email` is present only when the Asgardeo app releases the email claim; no `name` claim is documented, so display names fall back to the email local part.
 - **New required step:** the service endpoint must have **"Pass Security Context To Backend"** enabled (Deploy > Set Up > Endpoint Configurations), then be redeployed, or the gateway does not send the JWT.
 - **Still to confirm in the console (Phase 8):** database offering, exact `/choreo-apis` prefix, the served path for the `config.js` file mount, and the Ballerina buildpack and Node version labels.
+
+## OpenChoreo deployment notes
+
+- **Why OpenChoreo:** creating an organisation on Choreo cloud was restricted for this project's account, so the project is also deployed to OpenChoreo v1.3.3 (open-source Choreo platform) on a local k3d cluster. The Choreo cloud runbook is kept; see [deployment-openchoreo.md](deployment-openchoreo.md).
+- **Dockerfile builds for the Ballerina components:** the OpenChoreo `ballerina-buildpack-builder` installs a Java 21 runtime, but Ballerina 2201.14.x needs Java 25. `BP_JVM_VERSION` has no effect. `backend/Dockerfile` and `scheduler/Dockerfile` build on `ballerina/ballerina:2201.14.2` so the version matches local development and CI.
+- **Same-origin API access:** `frontend/nginx.conf.template` proxies `/api/` to the API component, so the SPA keeps `apiUrl = "/api"` and the API needs no CORS settings.
+- **Database wiring:** the Postgres Resource outputs are mapped to Ballerina's `BAL_CONFIG_VAR_*` environment variables in `workload.yaml`; `adminEmails` (an array, which environment variables cannot carry) goes in `BAL_CONFIG_DATA`.
+- **Auth in this setup:** dev mode (`BAL_CONFIG_VAR_DEVMODE=true`), for local demo only. ThunderID sign-in is future work.

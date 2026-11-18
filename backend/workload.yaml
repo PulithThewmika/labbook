@@ -1,0 +1,37 @@
+# OpenChoreo workload descriptor for labbook-api (read from the component's appPath at build time).
+apiVersion: openchoreo.dev/v1alpha1
+
+metadata:
+  name: labbook-api
+
+endpoints:
+  - name: api
+    port: 8080
+    type: HTTP
+    visibility:
+      - project
+      - external
+    schemaFile: openapi.yaml
+
+# The Postgres Resource (deploy/openchoreo/resources) publishes its connection details.
+# Ballerina reads configurable values from BAL_CONFIG_VAR_<NAME> environment variables.
+dependencies:
+  resources:
+    - ref: labbook-postgres
+      envBindings:
+        host: BAL_CONFIG_VAR_DBHOST
+        port: BAL_CONFIG_VAR_DBPORT
+        username: BAL_CONFIG_VAR_DBUSER
+        password: BAL_CONFIG_VAR_DBPASSWORD
+        database: BAL_CONFIG_VAR_DBNAME
+
+configurations:
+  env:
+    - name: BAL_CONFIG_VAR_DBSSLMODE
+      value: "disable"
+    # Local OpenChoreo demo only: the identity provider (ThunderID) is not wired in yet, so the
+    # API trusts the X-Dev-User header. Never enable devMode on a shared or public deployment.
+    - name: BAL_CONFIG_VAR_DEVMODE
+      value: "true"
+    - name: BAL_CONFIG_DATA
+      value: 'adminEmails = ["admin@labbook.dev"]'
