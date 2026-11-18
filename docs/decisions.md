@@ -22,7 +22,7 @@ Users sign in with ThunderID, OpenChoreo's identity provider, using the OIDC aut
 
 OpenChoreo's `postgres` Resource type: an in-cluster PostgreSQL 16 StatefulSet with a generated app user and password. The migration SQL files are its `initSQL`, so there is no separate migration job. Storage is persistent for the development environment.
 
-## Deviations from PLAN.md
+## Deviations from the original plan
 
 - **Node version:** the development machine has Node 22.14. CI and the frontend image build on Node 20 as the plan requires; the app must work on both.
 - **Ballerina install:** installed 2201.14.2 from the official GitHub release MSI (checksum verified) because `winget` hung. Not a project change.
