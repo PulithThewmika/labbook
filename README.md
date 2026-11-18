@@ -4,6 +4,8 @@
 
 Book university labs and equipment without double bookings.
 
+<p>Runs on &nbsp;<img src="docs/images/logos/openchoreo.png" alt="OpenChoreo" height="34">&nbsp;&nbsp; with sign-in by &nbsp;<img src="docs/images/logos/thunderid.svg" alt="ThunderID" height="30"></p>
+
 ![Computer Lab A availability timeline: booked slots in grey, a pending request striped](docs/screenshots/lab-detail.png)
 
 ## The problem
@@ -45,8 +47,8 @@ LabBook is deployed to [OpenChoreo](https://openchoreo.dev), the open-source int
 
 | Product | How LabBook uses it |
 |---|---|
-| **OpenChoreo** | One project with three components (service, web application, scheduled task), a PostgreSQL resource whose schema comes from `db/migrations`, builds from this repository with Dockerfile workflows, development, staging and production environments |
-| **ThunderID** | OpenChoreo's OIDC identity provider; LabBook signs users in with the authorization code flow and PKCE |
+| <img src="docs/images/logos/openchoreo.png" alt="OpenChoreo" height="34">| One project with three components (service, web application, scheduled task), a PostgreSQL resource whose schema comes from `db/migrations`, builds from this repository with Dockerfile workflows, development, staging and production environments |
+| <img src="docs/images/logos/thunderid.svg" alt="ThunderID" height="30">| OpenChoreo's OIDC identity provider; LabBook signs users in with the authorization code flow and PKCE |
 | **Ballerina** | Language of the REST API and the scheduler |
 
 Deployment steps: [docs/deployment-openchoreo.md](docs/deployment-openchoreo.md).
@@ -84,6 +86,10 @@ docs/        Documentation and diagrams
 ## Roadmap
 
 Email notifications, recurring bookings, calendar sync, multiple campuses.
+
+## Credits
+
+The OpenChoreo and ThunderID logos belong to their projects (both Apache-2.0) and are used here only to show what LabBook runs on.
 
 ## License
 
