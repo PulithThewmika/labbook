@@ -1,6 +1,6 @@
 # Build with the same Ballerina version used locally and in CI, then run the jar.
 FROM ballerina/ballerina:2201.14.2 AS build
-COPY --chown=ballerina:ballerina . /home/ballerina/src
+COPY --chown=ballerina:troupe . /home/ballerina/src
 WORKDIR /home/ballerina/src
 RUN bal build
 
