@@ -1,22 +1,22 @@
 @startuml seq-create-booking
 !theme plain
-title Create a booking
+title Sign in and create a booking
 
 actor Student
-participant "labbook-web" as Web
-participant "Asgardeo" as IDP
-participant "Choreo Gateway" as GW
+participant "labbook-web\n(SPA + nginx)" as Web
+participant "ThunderID" as IDP
 participant "labbook-api" as API
 database PostgreSQL as DB
 
 Student -> Web : open app, click Sign in
-Web -> IDP : /auth/login (managed auth, OIDC)
-IDP --> Web : session cookie
+Web -> IDP : redirect to /oauth2/authorize (code + PKCE challenge)
+Student -> IDP : sign in (password entered at ThunderID)
+IDP --> Web : redirect to /auth/callback?code=...
+Web -> IDP : POST /idp/token via nginx (code + PKCE verifier)
+IDP --> Web : access token (JWT)
 Student -> Web : submit booking form
-Web -> GW : POST /choreo-apis/.../bookings (session -> access token)
-GW -> GW : validate token
-GW -> API : POST /bookings + x-jwt-assertion
-API -> API : verify JWT signature, resolve caller + role
+Web -> API : POST /api/bookings + Authorization: Bearer <jwt>
+API -> API : verify JWT signature (JWKS) and issuer, resolve caller + role
 API -> DB : load resource, count upcoming bookings
 API -> API : check rules BR-1..BR-5, BR-7, BR-8
 alt a rule is broken

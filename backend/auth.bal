@@ -3,17 +3,17 @@ import ballerina/jwt;
 import ballerina/log;
 import ballerina/time;
 
-// Local development only: accept `X-Dev-User: <email>` instead of a JWT. NEVER true on Choreo.
+// Local development only: accept `X-Dev-User: <email>` instead of a JWT. Never enable it on a shared or public deployment.
 configurable boolean devMode = false;
 // Emails that get the admin role.
 configurable string[] adminEmails = [];
-// Expected `iss` of the backend JWT forwarded by the Choreo gateway (x-jwt-assertion).
+// Expected `iss` of the access token (for ThunderID: its issuer URL).
 configurable string jwtIssuer = "";
 // JWKS URL used to verify the JWT signature.
 configurable string jwtJwksUrl = "";
-// Request header that carries the JWT: "x-jwt-assertion" behind the Choreo gateway, or "Authorization"
-// (Bearer token) when the SPA signs in directly with an OIDC provider such as ThunderID on OpenChoreo.
-configurable string jwtHeader = "x-jwt-assertion";
+// Request header that carries the JWT. The SPA signs in with an OIDC provider (ThunderID on OpenChoreo)
+// and sends its access token as "Authorization: Bearer <jwt>"; a bare JWT in a custom header also works.
+configurable string jwtHeader = "Authorization";
 
 final jwt:ValidatorConfig jwtValidator = {
     issuer: jwtIssuer,
@@ -26,7 +26,7 @@ function init() returns error? {
         return error("Unknown campusTimeZone: " + campusTimeZone);
     }
     if devMode {
-        log:printWarn("devMode is ON: X-Dev-User header is trusted. Never enable this on Choreo.");
+        log:printWarn("devMode is ON: X-Dev-User header is trusted. Never enable this on a shared or public deployment.");
     } else if jwtIssuer == "" || jwtJwksUrl == "" {
         return error("jwtIssuer and jwtJwksUrl must be set when devMode is false");
     }

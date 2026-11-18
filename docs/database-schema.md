@@ -97,7 +97,7 @@ export DATABASE_URL=postgresql://labbook:labbook_local@localhost:5432/labbook
 bash scripts/migrate.sh
 ```
 
-On Choreo, the same script is run once per environment against that environment's database. See [deployment-choreo.md](deployment-choreo.md).
+On OpenChoreo, the same SQL files are the `initSQL` of the Postgres resource and run once when the database first starts. See [deployment-openchoreo.md](deployment-openchoreo.md).
 
 ## Seed data
 

@@ -1,13 +1,11 @@
 # API reference
 
-JSON over HTTP, camelCase fields. Machine-readable contract: [`backend/openapi.yaml`](../backend/openapi.yaml) (generated in Phase 4).
-
-Choreo exposes the service at `.../labbook-api/v1`. Inside the component the base path is `/`.
+JSON over HTTP, camelCase fields. Machine-readable contract: [`backend/openapi.yaml`](../backend/openapi.yaml). The base path is `/`; on OpenChoreo the web app proxies it as `/api/`.
 
 ## Authentication
 
-- **On Choreo:** the gateway validates the access token and forwards the request with an `x-jwt-assertion` header. The API verifies that JWT's signature.
-- **Local only:** with `devMode = true` the API accepts `X-Dev-User: <email>` instead. This must never be enabled on Choreo. See [security.md](security.md).
+- **Normal use:** the SPA signs in with ThunderID and sends `Authorization: Bearer <access token>`. The API verifies the token's signature and issuer.
+- **Local only:** with `devMode = true` the API accepts `X-Dev-User: <email>` instead. Never enable it on a shared or public deployment. See [security.md](security.md).
 
 Every route needs a caller except `GET /health`.
 

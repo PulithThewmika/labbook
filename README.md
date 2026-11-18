@@ -4,9 +4,7 @@
 
 Book university labs and equipment without double bookings.
 
-**Live demo:** not deployed yet. Choreo organisation access is pending; the Choreo runbook is in [docs/deployment-choreo.md](docs/deployment-choreo.md). LabBook runs end to end on [OpenChoreo](https://openchoreo.dev), the open-source Choreo platform: see [docs/deployment-openchoreo.md](docs/deployment-openchoreo.md). TODO(phase-8)
-
-TODO(phase-8): add a screenshot (docs/screenshots/labs.png).
+TODO(screenshots): add a screenshot (docs/screenshots/labs.png).
 
 ## The problem
 
@@ -24,6 +22,7 @@ Students see live availability of labs and equipment and request a time slot. La
 - Admin management of labs and equipment, plus a utilisation dashboard
 - Overlap protection enforced by PostgreSQL exclusion constraints
 - Scheduler that expires stale requests and completes finished bookings
+- Sign-in with ThunderID (OIDC authorization code flow with PKCE)
 
 ## Architecture
 
@@ -31,19 +30,23 @@ Students see live availability of labs and equipment and request a time slot. La
 
 More in [docs/architecture.md](docs/architecture.md).
 
-## Choreo Labs products used
+## Runs on OpenChoreo
+
+LabBook is deployed to [OpenChoreo](https://openchoreo.dev), the open-source internal developer platform (Apache-2.0), running on a local Kubernetes cluster. It was run end to end on OpenChoreo v1.3.3.
 
 | Product | How LabBook uses it |
 |---|---|
-| **Choreo** | Service, Web Application (Managed Authentication) and Scheduled Task components; Connections; configurables and secrets; Development to Production promotion; API gateway security; Observability |
-| **Asgardeo** | Identity provider behind Choreo Managed Authentication |
-| **Ballerina** | Language for the REST API and the scheduler; `configurable` variables map to Choreo configs |
+| **OpenChoreo** | One project with three components (service, web application, scheduled task), a PostgreSQL resource whose schema comes from `db/migrations`, builds from this repository with Dockerfile workflows, development, staging and production environments |
+| **ThunderID** | OpenChoreo's OIDC identity provider; LabBook signs users in with the authorization code flow and PKCE |
+| **Ballerina** | Language of the REST API and the scheduler |
+
+Deployment steps: [docs/deployment-openchoreo.md](docs/deployment-openchoreo.md).
 
 ## Tech stack
 
-Ballerina Swan Lake, PostgreSQL 16, React 18 + Vite + TypeScript + Tailwind CSS, Vitest, GitHub Actions.
+Ballerina Swan Lake 2201.14, PostgreSQL 16, React 18 + Vite + TypeScript + Tailwind CSS, Vitest, GitHub Actions, OpenChoreo v1.3.
 
-## Quick start (local)
+## Quick start (local, without Kubernetes)
 
 ```bash
 cp .env.example .env
@@ -52,25 +55,22 @@ export DATABASE_URL=postgresql://labbook:labbook_local@localhost:5432/labbook
 bash scripts/migrate.sh
 ```
 
-Then follow [docs/local-development.md](docs/local-development.md) to run the API and web app.
-
-## Deployment
-
-Choreo cloud: [docs/deployment-choreo.md](docs/deployment-choreo.md). Local OpenChoreo: [docs/deployment-openchoreo.md](docs/deployment-openchoreo.md).
+Then follow [docs/local-development.md](docs/local-development.md) to run the API and web app. Locally the app uses a dev sign-in picker instead of ThunderID.
 
 ## Project structure
 
 ```
-backend/     Ballerina REST API        (Choreo Service "labbook-api")
-scheduler/   Ballerina scheduled job   (Choreo Scheduled Task "labbook-scheduler")
-frontend/    React + Vite SPA          (Choreo Web Application "labbook-web")
+backend/     Ballerina REST API        (OpenChoreo service "labbook-api")
+scheduler/   Ballerina scheduled job   (OpenChoreo scheduled task "labbook-scheduler")
+frontend/    React + Vite SPA          (OpenChoreo web application "labbook-web")
 db/          SQL migrations and seed data
+deploy/      OpenChoreo manifests and scripts
 docs/        Documentation and diagrams
 ```
 
 ## Documentation
 
-[Architecture](docs/architecture.md) · [Database schema](docs/database-schema.md) · [API](docs/api.md) · [Security](docs/security.md) · [Local development](docs/local-development.md) · [Deployment (Choreo)](docs/deployment-choreo.md) · [Deployment (OpenChoreo)](docs/deployment-openchoreo.md) · [User guide](docs/user-guide.md) · [Decisions](docs/decisions.md)
+[Architecture](docs/architecture.md) · [Database schema](docs/database-schema.md) · [API](docs/api.md) · [Security](docs/security.md) · [Local development](docs/local-development.md) · [Deployment on OpenChoreo](docs/deployment-openchoreo.md) · [User guide](docs/user-guide.md) · [Decisions](docs/decisions.md)
 
 ## Roadmap
 
