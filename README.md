@@ -4,7 +4,7 @@
 
 Book university labs and equipment without double bookings.
 
-TODO(screenshots): add a screenshot (docs/screenshots/labs.png).
+![Computer Lab A availability timeline: booked slots in grey, a pending request striped](docs/screenshots/lab-detail.png)
 
 ## The problem
 
@@ -23,6 +23,15 @@ Students see live availability of labs and equipment and request a time slot. La
 - Overlap protection enforced by PostgreSQL exclusion constraints
 - Scheduler that expires stale requests and completes finished bookings
 - Sign-in with ThunderID (OIDC authorization code flow with PKCE)
+
+## Screenshots
+
+| | |
+|---|---|
+| ![Booking form refusing an overlapping slot](docs/screenshots/booking-conflict.png) | ![Admin approval queue](docs/screenshots/approvals.png) |
+| A second request for a taken slot is refused (409), enforced by the database. | Admins review pending requests, oldest first. |
+| ![Admin dashboard with lab utilisation](docs/screenshots/dashboard.png) | ![LabBook project in the OpenChoreo portal](docs/screenshots/openchoreo-project.png) |
+| Utilisation per lab for the last 7 days and the most booked equipment. | The project in OpenChoreo: three components and a Postgres resource, with the development, staging and production pipeline. |
 
 ## Architecture
 
