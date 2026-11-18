@@ -1,10 +1,10 @@
 # User guide
 
-TODO(phase-8): add screenshots from `docs/screenshots/` once the app is deployed.
+TODO(screenshots): add screenshots from `docs/screenshots/`.
 
 ## Students
 
-1. **Sign in.** Open LabBook and choose *Sign in*. You land on the labs page.
+1. **Sign in.** Open LabBook and choose *Sign in*. You are sent to ThunderID to sign in, then return to the labs page.
 2. **Browse labs.** Each card shows the building, room, capacity and opening hours.
 3. **Check availability.** Open a lab to see its equipment and a day timeline. Grey blocks are busy, striped blocks are waiting for approval. You can look up to 30 days ahead.
 4. **Find equipment.** The Equipment page filters by category and status.

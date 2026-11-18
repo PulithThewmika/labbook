@@ -8,7 +8,7 @@ configurable string dbHost = "localhost";
 configurable int dbPort = 5432;
 configurable string dbName = "labbook";
 configurable string dbUser = "labbook";
-// Secret. Provide it through Config.toml locally or a Choreo secret configuration.
+// Secret. Provide it through Config.toml locally or an OpenChoreo Resource binding.
 configurable string dbPassword = ?;
 // disable | prefer | require | verify-ca | verify-full
 configurable string dbSslMode = "require";

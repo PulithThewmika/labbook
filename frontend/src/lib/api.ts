@@ -51,8 +51,6 @@ export class ApiError extends Error {
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT'
   body?: unknown
-  /** Do not redirect to the login page on 401 (used by the session probe). */
-  noRedirect?: boolean
 }
 
 export async function request<T>(path: string, opts: RequestOptions = {}): Promise<T> {
@@ -85,9 +83,6 @@ export async function request<T>(path: string, opts: RequestOptions = {}): Promi
     // non-JSON error body
   }
   if (res.status === 401 && cfg.authMode === 'oidc') clearToken() // expired or rejected: next sign-in starts fresh
-  if (res.status === 401 && cfg.authMode === 'choreo' && !opts.noRedirect) {
-    window.location.href = '/auth/login'
-  }
   throw new ApiError(
     res.status,
     payload.code ?? 'UNKNOWN',
@@ -106,7 +101,7 @@ function qs(params: Record<string, string | number | boolean | undefined | null>
 }
 
 export const api = {
-  me: () => request<Me>('/me', { noRedirect: true }),
+  me: () => request<Me>('/me'),
 
   labs: (includeInactive = false) => request<Lab[]>(`/labs${qs({ includeInactive: includeInactive || undefined })}`),
   lab: (id: string) => request<LabDetail>(`/labs/${id}`),

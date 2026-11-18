@@ -7,19 +7,19 @@ start
 :GitHub Actions runs\nbackend, scheduler, frontend jobs;
 if (all checks green?) then (yes)
   :Squash-merge to main;
-  :Choreo builds each component\n(Ballerina / React buildpack);
-  :Choreo security scan;
-  if (scan passes?) then (yes)
-    :Deploy to Development;
-    :Smoke test (student + admin);
+  :OpenChoreo build workflow\n(dockerfile-builder) checks out main;
+  :Build image from each Dockerfile\nand push to the registry;
+  if (build succeeds?) then (yes)
+    :Deploy to development\n(workload from workload.yaml);
+    :Smoke test (sign in, book, conflict);
     if (tests pass?) then (yes)
-      :Promote to Production;
+      :Promote through staging\nto production;
     else (no)
       :Fix on a new branch;
       stop
     endif
   else (no)
-    :Fix vulnerabilities;
+    :Read the build log and fix;
     stop
   endif
 else (no)

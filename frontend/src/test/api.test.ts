@@ -37,14 +37,4 @@ describe('api client', () => {
     expect(url).toBe('/api/labs')
     expect((init.headers as Record<string, string>)['X-Dev-User']).toBe('admin@labbook.dev')
   })
-
-  it('does not send X-Dev-User in choreo mode', async () => {
-    window.configs = { authMode: 'choreo', apiUrl: '/choreo-apis/x' }
-    setDevUser('admin@labbook.dev')
-    const fetchMock = mockFetch(200, [])
-    await api.labs()
-    const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit]
-    expect(url).toBe('/choreo-apis/x/labs')
-    expect((init.headers as Record<string, string>)['X-Dev-User']).toBeUndefined()
-  })
 })

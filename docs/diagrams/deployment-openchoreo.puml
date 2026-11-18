@@ -1,0 +1,38 @@
+@startuml deployment-openchoreo
+!theme plain
+title LabBook - Deployment on OpenChoreo
+
+cloud "GitHub" as GH {
+  artifact "labbook repo\n(backend / scheduler / frontend)" as REPO
+}
+
+node "Local Kubernetes cluster (k3d)" as K8S {
+  node "OpenChoreo control plane" as CP {
+    component "Build workflows\n(dockerfile-builder)" as WF
+    component "Portal + API" as PORTAL
+  }
+  node "ThunderID" as IDP {
+    component "OIDC provider" as OIDC
+  }
+  node "Project: labbook" as PROJ {
+    node "development" as DEV {
+      component "labbook-web\n(nginx)" as W
+      component "labbook-api" as A
+      component "labbook-scheduler\n(cron */15 * * * *)" as S
+      database "labbook-postgres\n(resource)" as DB
+      W --> A : /api
+      A --> DB
+      S --> DB
+    }
+    node "staging" as STG
+    node "production" as PROD
+  }
+}
+
+REPO --> WF : checkout + build images
+WF --> DEV : deploy
+DEV ..> STG : promote
+STG ..> PROD : promote
+W --> OIDC : sign in redirect, /idp/token
+A --> OIDC : JWKS (verify tokens)
+@enduml

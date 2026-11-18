@@ -1,8 +1,6 @@
 # Running LabBook on OpenChoreo
 
-[OpenChoreo](https://openchoreo.dev) is the open-source internal developer platform that Choreo is built on (Apache-2.0). It runs on a local Kubernetes cluster, so it needs no cloud account. This guide deploys the whole LabBook project to it: a PostgreSQL resource, the API, the web app and the scheduled task. It was run end to end on OpenChoreo v1.3.3.
-
-The Choreo cloud runbook is in [deployment-choreo.md](deployment-choreo.md). Differences between the two are listed at the end.
+[OpenChoreo](https://openchoreo.dev) is an open-source internal developer platform for Kubernetes (Apache-2.0). It runs on a local Kubernetes cluster, so it needs no cloud account. This guide deploys the whole LabBook project to it: a PostgreSQL resource, the API, the web app and the scheduled task. It was run end to end on OpenChoreo v1.3.3.
 
 ## What you need
 
@@ -116,17 +114,6 @@ The access token is kept in `sessionStorage`, which is fine for a local demo; a 
 - **App URL.** The deploy scripts print the real hostname, which includes a hash. The hostname in some docs without the hash returned 404.
 - **Scheduled task schedule.** The cron expression is an environment config on the ReleaseBinding (`componentTypeEnvironmentConfigs.schedule`, default `1 * * * *`), not a Component parameter.
 - **Build order.** The web component can deploy before the API exists; its `LABBOOK_API_URL` still resolves because the address is derived from the component name.
-
-## Differences from Choreo cloud
-
-| Topic | Choreo cloud | OpenChoreo (local) |
-|---|---|---|
-| Component config | `.choreo/component.yaml` | `workload.yaml` plus Component manifests |
-| Build | Buildpacks or Dockerfile in the console | `ClusterWorkflow` (`dockerfile-builder`, buildpack builders) |
-| Login | Managed Authentication with Asgardeo | ThunderID, authorization code with PKCE in the SPA |
-| API token | `X-JWT-Assertion` header from the gateway | `Authorization: Bearer` access token from ThunderID |
-| Database | Managed database or Neon | `postgres` Resource, in-cluster, PVC-backed |
-| Observability | Built into the console | Optional plane (`--with-observability`), not installed here |
 
 ## Clean up
 

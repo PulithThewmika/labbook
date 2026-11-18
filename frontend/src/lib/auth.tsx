@@ -11,7 +11,7 @@ interface AuthState {
   status: Status
   user: Me | null
   isAdmin: boolean
-  /** Choreo: redirect to managed-auth login. Dev: switch to the given dev user. */
+  /** oidc mode: redirect to the identity provider. Dev mode: switch to the given dev user. */
   signIn: (devEmail?: string) => void
   signOut: () => void
   /** Re-reads the signed-in user (used after the OIDC redirect completes). */
@@ -21,7 +21,7 @@ interface AuthState {
 const AuthContext = createContext<AuthState | null>(null)
 
 // In dev mode there is no IdP: the picked email is sent as X-Dev-User.
-// In choreo mode the session cookie is managed by Choreo Managed Authentication.
+// In oidc mode the SPA runs the authorization code flow with PKCE against ThunderID (see lib/oidc.ts).
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<Status>('loading')
   const [user, setUser] = useState<Me | null>(null)
@@ -57,10 +57,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       isAdmin: user?.role === 'admin',
       signIn: (devEmail) => {
-        if (getConfig().authMode === 'choreo') {
-          window.location.href = '/auth/login'
-          return
-        }
         if (getConfig().authMode === 'oidc') {
           void startLogin()
           return
@@ -70,12 +66,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         void load()
       },
       signOut: () => {
-        if (getConfig().authMode === 'choreo') {
-          // Choreo Managed Authentication logout: /auth/logout?session_hint=<value of the session_hint cookie>
-          const hint = document.cookie.split('; ').find((c) => c.startsWith('session_hint='))?.split('=')[1] ?? ''
-          window.location.href = `/auth/logout?session_hint=${hint}`
-          return
-        }
         if (getConfig().authMode === 'oidc') clearToken()
         setDevUser(null)
         setUser(null)

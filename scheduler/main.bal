@@ -7,7 +7,7 @@ configurable string dbHost = "localhost";
 configurable int dbPort = 5432;
 configurable string dbName = "labbook";
 configurable string dbUser = "labbook";
-// Secret. Provide it through Config.toml locally or a Choreo secret configuration.
+// Secret. Provide it through Config.toml locally or an OpenChoreo Resource binding.
 configurable string dbPassword = ?;
 // disable | prefer | require | verify-ca | verify-full
 configurable string dbSslMode = "require";
@@ -52,7 +52,7 @@ function runJob() returns [int, int]|error {
     return [expired, completed];
 }
 
-// Choreo Scheduled Task entry point: run once and exit. A returned error exits non-zero.
+// OpenChoreo scheduled-task entry point: run once and exit. A returned error exits non-zero.
 public function main() returns error? {
     [int, int]|error r = runJob();
     if r is error {

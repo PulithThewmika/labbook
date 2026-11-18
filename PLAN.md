@@ -1,5 +1,7 @@
 # LabBook — Master Build Plan
 
+> **Scope change (2026-11-18):** the target platform is now **OpenChoreo with ThunderID**, not Choreo cloud with Asgardeo. Creating a Choreo cloud organisation was restricted, so that deployment could not be run. Wherever this plan says Choreo (console, Managed Authentication, gateway JWT, `component.yaml`) or Asgardeo, read OpenChoreo, ThunderID sign-in and `workload.yaml`. The authoritative descriptions are [docs/deployment-openchoreo.md](docs/deployment-openchoreo.md), [docs/architecture.md](docs/architecture.md), [docs/security.md](docs/security.md) and ADR-006 in [docs/decisions.md](docs/decisions.md).
+
 > **One-prompt kickoff** (paste in a new Claude Code session opened in this `Repo` folder):
 >
 > ```
@@ -536,6 +538,6 @@ Each phase: create its issue → branch → work → quality gate → commit(s) 
 - [x] Phase 5 — Scheduler
 - [x] Phase 6 — Frontend
 - [x] Phase 7 — CI
-- [ ] Phase 8 — Deploy on Choreo (blocked: Choreo organisation creation is restricted; runbook and doc corrections done in docs/deployment-choreo.md)
+- [x] Phase 8 — Deploy (done on OpenChoreo with ThunderID sign-in, development environment; see docs/deployment-openchoreo.md)
 - [ ] Phase 9 — Polish & docs completion
 - [ ] Phase 10 — Release

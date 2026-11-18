@@ -1,2 +1,3 @@
-// Runtime config. On Choreo a file mount replaces this file with the connection's API path and authMode "choreo".
+// Runtime config for local development (dev sign-in picker). On OpenChoreo, nginx renders /config.js from
+// environment variables (authMode "oidc"); see nginx.conf.template and workload.yaml.
 window.configs = { apiUrl: "/api", authMode: "dev", timeZone: "Asia/Colombo" };
