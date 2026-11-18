@@ -32,8 +32,6 @@ configurations:
     # Sign-in is handled by ThunderID: the SPA sends its access token as "Authorization: Bearer".
     - name: BAL_CONFIG_VAR_DEVMODE
       value: "false"
-    - name: BAL_CONFIG_VAR_JWTHEADER
-      value: "Authorization"
     - name: BAL_CONFIG_VAR_JWTISSUER
       value: "http://thunder.openchoreo.localhost:8080"
     - name: BAL_CONFIG_VAR_JWTJWKSURL
