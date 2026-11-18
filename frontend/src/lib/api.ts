@@ -1,4 +1,5 @@
 import { getConfig } from './config'
+import { clearToken, getToken } from './oidc'
 import type {
   Availability,
   Booking,
@@ -60,6 +61,8 @@ export async function request<T>(path: string, opts: RequestOptions = {}): Promi
   if (opts.body !== undefined) headers['Content-Type'] = 'application/json'
   const devUser = getDevUser()
   if (cfg.authMode === 'dev' && devUser) headers['X-Dev-User'] = devUser
+  const token = cfg.authMode === 'oidc' ? getToken() : null
+  if (token) headers.Authorization = `Bearer ${token}`
 
   let res: Response
   try {
@@ -81,6 +84,7 @@ export async function request<T>(path: string, opts: RequestOptions = {}): Promi
   } catch {
     // non-JSON error body
   }
+  if (res.status === 401 && cfg.authMode === 'oidc') clearToken() // expired or rejected: next sign-in starts fresh
   if (res.status === 401 && cfg.authMode === 'choreo' && !opts.noRedirect) {
     window.location.href = '/auth/login'
   }

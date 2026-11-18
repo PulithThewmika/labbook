@@ -1,7 +1,10 @@
 export interface AppConfig {
   apiUrl: string
-  authMode: 'dev' | 'choreo'
+  authMode: 'dev' | 'choreo' | 'oidc'
   timeZone: string
+  /** oidc mode: base URL of the identity provider as the browser reaches it, e.g. http://thunder.openchoreo.localhost:8080 */
+  oidcAuthority: string
+  oidcClientId: string
 }
 
 declare global {
@@ -15,7 +18,9 @@ export function getConfig(): AppConfig {
   const c = window.configs ?? {}
   return {
     apiUrl: c.apiUrl ?? '/api',
-    authMode: c.authMode === 'choreo' ? 'choreo' : 'dev',
+    authMode: c.authMode === 'choreo' || c.authMode === 'oidc' ? c.authMode : 'dev',
     timeZone: c.timeZone ?? 'Asia/Colombo',
+    oidcAuthority: c.oidcAuthority ?? '',
+    oidcClientId: c.oidcClientId ?? 'labbook-web',
   }
 }

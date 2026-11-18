@@ -95,3 +95,10 @@ function otherSqlStatesMap() {
     test:assertEquals(mapSqlState("22P02")[0], 400);
     test:assertEquals(mapSqlState("08006")[0], 500);
 }
+
+@test:Config {groups: ["unit"]}
+function tokenFromStripsBearerPrefix() {
+    test:assertEquals(tokenFrom("Bearer abc.def.ghi"), "abc.def.ghi");
+    test:assertEquals(tokenFrom("bearer  abc.def.ghi "), "abc.def.ghi");
+    test:assertEquals(tokenFrom("abc.def.ghi"), "abc.def.ghi");
+}

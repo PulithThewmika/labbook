@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { ReactNode } from 'react'
 import { api, ApiError, getDevUser, setDevUser } from './api'
 import { getConfig } from './config'
+import { clearToken, getToken, startLogin } from './oidc'
 import type { Me } from './types'
 
 type Status = 'loading' | 'signedIn' | 'signedOut'
@@ -13,6 +14,8 @@ interface AuthState {
   /** Choreo: redirect to managed-auth login. Dev: switch to the given dev user. */
   signIn: (devEmail?: string) => void
   signOut: () => void
+  /** Re-reads the signed-in user (used after the OIDC redirect completes). */
+  refresh: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthState | null>(null)
@@ -25,6 +28,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const load = useCallback(async () => {
     if (getConfig().authMode === 'dev' && !getDevUser()) {
+      setUser(null)
+      setStatus('signedOut')
+      return
+    }
+    if (getConfig().authMode === 'oidc' && !getToken()) {
       setUser(null)
       setStatus('signedOut')
       return
@@ -53,6 +61,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           window.location.href = '/auth/login'
           return
         }
+        if (getConfig().authMode === 'oidc') {
+          void startLogin()
+          return
+        }
         setDevUser(devEmail ?? 'student@labbook.dev')
         setStatus('loading')
         void load()
@@ -64,10 +76,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           window.location.href = `/auth/logout?session_hint=${hint}`
           return
         }
+        if (getConfig().authMode === 'oidc') clearToken()
         setDevUser(null)
         setUser(null)
         setStatus('signedOut')
       },
+      refresh: load,
     }),
     [status, user, load],
   )

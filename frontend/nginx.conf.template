@@ -3,7 +3,7 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
-    # API calls from the SPA (apiUrl is "/api" in public/config.js) go to the API component.
+    # API calls from the SPA (apiUrl is "/api") go to the API component.
     location /api/ {
         proxy_pass ${LABBOOK_API_URL}/;
         proxy_set_header Host $host;
@@ -11,9 +11,18 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    # Runtime config must never be cached.
+    # OIDC token exchange. The identity provider sends no CORS headers on its token endpoint, so the
+    # browser posts to this same-origin path and nginx forwards the request inside the cluster.
+    location = /idp/token {
+        proxy_pass ${LABBOOK_IDP_TOKEN_URL};
+        proxy_set_header Host ${LABBOOK_IDP_PUBLIC_HOST};
+    }
+
+    # Runtime config, rendered from environment variables when the container starts.
     location = /config.js {
+        default_type application/javascript;
         add_header Cache-Control "no-store";
+        return 200 'window.configs = { apiUrl: "/api", authMode: "${LABBOOK_AUTH_MODE}", timeZone: "Asia/Colombo", oidcAuthority: "${LABBOOK_OIDC_AUTHORITY}", oidcClientId: "${LABBOOK_OIDC_CLIENT_ID}" };';
     }
 
     # Single-page app: unknown paths fall back to index.html.
