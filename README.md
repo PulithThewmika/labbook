@@ -68,6 +68,25 @@ bash scripts/migrate.sh
 
 Then follow [docs/local-development.md](docs/local-development.md) to run the API and web app. Locally the app uses a dev sign-in picker instead of ThunderID.
 
+## Container images
+
+Ready-made images are published to GitHub Container Registry for each release:
+
+| Image | Contents |
+|---|---|
+| `ghcr.io/puliththewmika/labbook-api` | Ballerina REST API (port 8080) |
+| `ghcr.io/puliththewmika/labbook-scheduler` | Scheduled job (runs once per tick and exits) |
+| `ghcr.io/puliththewmika/labbook-web` | React app behind nginx (port 80) |
+
+Tags: the version (for example `1.0.0`) and `latest`.
+
+```bash
+docker pull ghcr.io/puliththewmika/labbook-web:1.0.0
+docker run --rm -p 8081:80 ghcr.io/puliththewmika/labbook-web:1.0.0   # dev sign-in picker; point /api at a running API
+```
+
+The images take their settings from environment variables at run time (see [docs/architecture.md](docs/architecture.md#configuration-matrix)); no secrets are built into them. They are built by [`publish-images.yml`](.github/workflows/publish-images.yml) when a version tag is pushed.
+
 ## Project structure
 
 ```
