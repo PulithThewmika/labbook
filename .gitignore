@@ -13,3 +13,6 @@ Config.toml
 
 # Local assistant instructions
 CLAUDE.md
+
+# Local build plan (kept on disk, not published)
+PLAN.md
