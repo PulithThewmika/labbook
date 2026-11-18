@@ -1,0 +1,127 @@
+# The three LabBook components, built from this repository on GitHub (branch main).
+# Each component reads its workload.yaml from its own directory.
+apiVersion: openchoreo.dev/v1alpha1
+kind: Component
+metadata:
+  name: labbook-api
+  namespace: default
+spec:
+  owner:
+    projectName: labbook
+  componentType:
+    kind: ClusterComponentType
+    name: deployment/service
+  autoDeploy: true
+  workflow:
+    kind: ClusterWorkflow
+    name: ballerina-buildpack-builder
+    parameters:
+      repository:
+        url: "https://github.com/PulithThewmika/labbook"
+        revision:
+          branch: "main"
+        appPath: "/backend"
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: WorkflowRun
+metadata:
+  name: labbook-api-build-01
+  labels:
+    openchoreo.dev/project: "labbook"
+    openchoreo.dev/component: "labbook-api"
+spec:
+  workflow:
+    kind: ClusterWorkflow
+    name: ballerina-buildpack-builder
+    parameters:
+      repository:
+        url: "https://github.com/PulithThewmika/labbook"
+        revision:
+          branch: "main"
+        appPath: "/backend"
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: Component
+metadata:
+  name: labbook-scheduler
+  namespace: default
+spec:
+  owner:
+    projectName: labbook
+  componentType:
+    kind: ClusterComponentType
+    name: cronjob/scheduled-task
+  autoDeploy: true
+  workflow:
+    kind: ClusterWorkflow
+    name: ballerina-buildpack-builder
+    parameters:
+      repository:
+        url: "https://github.com/PulithThewmika/labbook"
+        revision:
+          branch: "main"
+        appPath: "/scheduler"
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: WorkflowRun
+metadata:
+  name: labbook-scheduler-build-01
+  labels:
+    openchoreo.dev/project: "labbook"
+    openchoreo.dev/component: "labbook-scheduler"
+spec:
+  workflow:
+    kind: ClusterWorkflow
+    name: ballerina-buildpack-builder
+    parameters:
+      repository:
+        url: "https://github.com/PulithThewmika/labbook"
+        revision:
+          branch: "main"
+        appPath: "/scheduler"
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: Component
+metadata:
+  name: labbook-web
+  namespace: default
+spec:
+  owner:
+    projectName: labbook
+  componentType:
+    kind: ClusterComponentType
+    name: deployment/web-application
+  autoDeploy: true
+  workflow:
+    kind: ClusterWorkflow
+    name: dockerfile-builder
+    parameters:
+      repository:
+        url: "https://github.com/PulithThewmika/labbook"
+        revision:
+          branch: "main"
+        appPath: "/frontend"
+      docker:
+        context: "/frontend"
+        filePath: "/frontend/Dockerfile"
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: WorkflowRun
+metadata:
+  name: labbook-web-build-01
+  labels:
+    openchoreo.dev/project: "labbook"
+    openchoreo.dev/component: "labbook-web"
+spec:
+  workflow:
+    kind: ClusterWorkflow
+    name: dockerfile-builder
+    parameters:
+      repository:
+        url: "https://github.com/PulithThewmika/labbook"
+        revision:
+          branch: "main"
+        appPath: "/frontend"
+      docker:
+        context: "/frontend"
+        filePath: "/frontend/Dockerfile"
