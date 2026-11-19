@@ -8,6 +8,10 @@ Book university labs and equipment without double bookings.
 
 ![Computer Lab A availability timeline: booked slots in grey, a pending request striped](docs/screenshots/lab-detail.png)
 
+## Demo
+
+https://github.com/user-attachments/assets/9cb13ded-d462-4a84-8f7d-c3da283f783b
+
 ## The problem
 
 In many universities, lab and equipment booking runs on paper logbooks, WhatsApp messages or emails to the instructor. That leads to double bookings, nobody can see what is free, and there is no record of who used what.
