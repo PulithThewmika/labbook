@@ -6,11 +6,11 @@ Book university labs and equipment without double bookings.
 
 <p>Runs on &nbsp;<img src="docs/images/logos/openchoreo.png" alt="OpenChoreo" height="34">&nbsp;&nbsp; with sign-in by &nbsp;<img src="docs/images/logos/thunderid.svg" alt="ThunderID" height="30"></p>
 
-![Computer Lab A availability timeline: booked slots in grey, a pending request striped](docs/screenshots/lab-detail.png)
-
 ## Demo
 
 https://github.com/user-attachments/assets/9cb13ded-d462-4a84-8f7d-c3da283f783b
+
+![Computer Lab A availability timeline: booked slots in grey, a pending request striped](docs/screenshots/lab-detail.png)
 
 ## The problem
 
