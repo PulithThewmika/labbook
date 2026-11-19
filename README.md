@@ -10,8 +10,6 @@ Book university labs and equipment without double bookings.
 
 https://github.com/user-attachments/assets/9cb13ded-d462-4a84-8f7d-c3da283f783b
 
-![Computer Lab A availability timeline: booked slots in grey, a pending request striped](docs/screenshots/lab-detail.png)
-
 ## The problem
 
 In many universities, lab and equipment booking runs on paper logbooks, WhatsApp messages or emails to the instructor. That leads to double bookings, nobody can see what is free, and there is no record of who used what.
@@ -31,6 +29,10 @@ Students see live availability of labs and equipment and request a time slot. La
 - Sign-in with ThunderID (OIDC authorization code flow with PKCE)
 
 ## Screenshots
+
+![Computer Lab A availability timeline: booked slots in grey, a pending request striped](docs/screenshots/lab-detail.png)
+
+Live availability for Computer Lab A: booked slots in grey, a pending request striped.
 
 | | |
 |---|---|
